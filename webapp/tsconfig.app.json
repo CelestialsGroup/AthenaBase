@@ -31,11 +31,19 @@
 			],
 			"@shadcn/*": [
 				"./shadcn/*"
+			],
+			"@component/*": [
+				"./component/*"
+			],
+			"@internal/*": [
+				"./internal/*"
 			]
 		}
 	},
 	"include": [
 		"src",
-		"shadcn"
+		"shadcn",
+		"component",
+		"internal"
 	]
 }

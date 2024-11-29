@@ -1,33 +1,46 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "dark" | "light" | "system"
+type Theme = "dark" | "light"
+
+type ThemeMode = Theme | "system"
 
 type ThemeProviderProps = {
 	children: React.ReactNode
-	defaultTheme?: Theme
+	defaultThemeMode?: ThemeMode
 	storageKey?: string
 }
 
 type ThemeProviderState = {
+	themeMode: ThemeMode
 	theme: Theme
-	setTheme: (theme: Theme) => void
+	setThemeMode: (theme: ThemeMode) => void
 }
 
+const getSystemTheme = () => window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
 const initialState: ThemeProviderState = {
-	theme: "system",
-	setTheme: () => null,
+	themeMode: "system",
+	theme: getSystemTheme(),
+	setThemeMode: () => null,
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export const ThemeProvider = ({
 	children,
-	defaultTheme = "system",
+	defaultThemeMode = "system",
 	storageKey = "athena-base-theme",
 	...props
 }: ThemeProviderProps) => {
 	const [theme, setTheme] = useState<Theme>(
-		() => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+		() => {
+			const themeMode = (localStorage.getItem(storageKey) as ThemeMode) || defaultThemeMode;
+			if (themeMode === "system") return getSystemTheme();
+			return themeMode as Theme;
+		}
+	);
+	const [themeMode, setThemeMode] = useState<ThemeMode>(
+		() => (localStorage.getItem(storageKey) as Theme) || defaultThemeMode
 	);
 
 	useEffect(() => {
@@ -35,24 +48,22 @@ export const ThemeProvider = ({
 
 		root.classList.remove("light", "dark");
 
-		if (theme === "system") {
-			const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-				.matches
-				? "dark"
-				: "light";
-
+		if (themeMode === "system") {
+			const systemTheme = getSystemTheme();
+			setTheme(systemTheme);
 			root.classList.add(systemTheme);
 			return;
 		}
-
-		root.classList.add(theme);
-	}, [theme]);
+		setTheme(themeMode);
+		root.classList.add(themeMode);
+	}, [themeMode]);
 
 	const value = {
+		themeMode,
 		theme,
-		setTheme: (theme: Theme) => {
-			localStorage.setItem(storageKey, theme);
-			setTheme(theme);
+		setThemeMode: (themeMode: ThemeMode) => {
+			localStorage.setItem(storageKey, themeMode);
+			setThemeMode(themeMode);
 		},
 	};
 

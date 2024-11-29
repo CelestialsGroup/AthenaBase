@@ -25,7 +25,7 @@ func (ws *WebServer) Start(ctx context.Context) error {
 			"message": "pong",
 		})
 	})
-	engine.Static("/static/", "./webapp/dist/")
+	engine.Static("/static", "./webapp/dist/static")
 	engine.NoRoute(func(c *gin.Context) {
 		c.File("./webapp/dist/index.html")
 	})

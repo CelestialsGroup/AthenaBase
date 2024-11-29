@@ -16,6 +16,12 @@
 			],
 			"@shadcn/*": [
 				"./shadcn/*"
+			],
+			"@component/*": [
+				"./component/*"
+			],
+			"@internal/*": [
+				"./internal/*"
 			]
 		}
 	}

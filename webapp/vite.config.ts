@@ -14,6 +14,8 @@ export default defineConfig({
 		alias: {
 			"~": path.resolve(__dirname, "./src"),
 			"@shadcn": path.resolve(__dirname, "./shadcn"),
+			"@component": path.resolve(__dirname, "./component"),
+			"@internal": path.resolve(__dirname, "./internal"),
 		},
 	},
 });
