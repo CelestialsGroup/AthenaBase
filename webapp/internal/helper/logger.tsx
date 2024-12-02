@@ -13,7 +13,7 @@ const COLOR_INFO = "#009";
 const lognull = () => { };
 
 class Logger {
-	private level: number = internal.getMode() === "development" ? 1 : 3;
+	private level: number = internal.Mode === "development" ? 1 : 3;
 	private loggers = {
 		debug: console.log.bind(console, "%c[debug]", `color: ${COLOR_DEBUG}`, new Date()),
 		info: console.log.bind(console, "%c[info]", `color: ${COLOR_INFO}`, new Date()),
