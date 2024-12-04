@@ -1,3 +1,4 @@
+import datetime from "@internal/helper/datetime";
 import internal from "@internal/index";
 
 type Level = "debug" | "verbose" | "info" | "none"
@@ -15,14 +16,9 @@ const lognull = () => { };
 class Logger {
 	private level: number = internal.Mode === "development" ? 1 : 3;
 	private loggers = {
-		debug: console.log.bind(console, "%c[debug]", `color: ${COLOR_DEBUG}`, new Date()),
-		info: console.log.bind(console, "%c[info]", `color: ${COLOR_INFO}`, new Date()),
+		debug: console.log.bind(console, "%c[debug]", `color: ${COLOR_DEBUG}`, datetime.strftime(new Date())),
+		info: console.log.bind(console, "%c[info]", `color: ${COLOR_INFO}`, datetime.strftime(new Date())),
 	};
-
-	/**
-	 * init
-	 */
-	public init() { }
 
 	/**
 	 * setLevel

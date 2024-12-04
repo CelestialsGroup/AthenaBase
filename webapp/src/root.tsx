@@ -1,5 +1,6 @@
 import Notice from "@component/notice";
 import { ThemeProvider } from "@component/theme-provider";
+import api from "@internal/api";
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
 
@@ -7,6 +8,10 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import Page from "~/page";
 
 const Root = () => {
+	React.useEffect(() => {
+		api.properties.then(resp => { console.log(resp); });
+	}, []);
+
 	return <React.Fragment>
 		<ThemeProvider>
 			<BrowserRouter>

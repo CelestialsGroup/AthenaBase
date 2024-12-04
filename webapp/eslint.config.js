@@ -44,6 +44,7 @@ export default tseslint.config(
 					"newlines-between": "always",
 				},
 			],
+			"@typescript-eslint/no-explicit-any": "off",
 		},
 	},
 	{

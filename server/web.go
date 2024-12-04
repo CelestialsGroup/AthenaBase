@@ -2,6 +2,7 @@ package server
 
 import (
 	"athenabase/logger"
+	webapi "athenabase/server/web-api"
 	"context"
 	"net/http"
 	"time"
@@ -25,6 +26,8 @@ func (ws *WebServer) Start(ctx context.Context) error {
 			"message": "pong",
 		})
 	})
+	apiGroup := engine.Group("/api")
+	webapi.RegisterRouterGroup(apiGroup)
 	engine.Static("/static", "./webapp/dist/static")
 	engine.NoRoute(func(c *gin.Context) {
 		c.File("./webapp/dist/index.html")

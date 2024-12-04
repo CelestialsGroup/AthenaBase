@@ -15,6 +15,9 @@ const (
 )
 
 func Contains[T comparable](s []T, elem T) bool {
+	if s == nil {
+		return false
+	}
 	for _, a := range s {
 		if a == elem {
 			return true

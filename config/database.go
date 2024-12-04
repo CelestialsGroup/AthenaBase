@@ -9,7 +9,7 @@ import (
 func init() {
 	viper.SetDefault("database.type", "sqlite")
 	viper.SetDefault("database.host", "athena-base.db")
-	viper.SetDefault("database.config", "cache=shared&mode=rwc")
+	viper.SetDefault("database.config", "mode=rwc")
 }
 
 type DataBase struct {

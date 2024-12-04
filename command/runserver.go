@@ -1,6 +1,7 @@
 package command
 
 import (
+	"athenabase/internal/migrate"
 	"athenabase/server"
 	"context"
 
@@ -14,6 +15,9 @@ var (
 		Long:  "run server: api web",
 		Run: func(cmd *cobra.Command, args []string) {
 			ctx := context.Background()
+			go func(ctx context.Context) {
+				migrate.Migrate()
+			}(ctx)
 			server.Start(ctx)
 		},
 	}
