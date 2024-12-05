@@ -1,5 +1,6 @@
 import MonacoEditor from "@component/monaco-editor";
 import ThemeToggle from "@component/theme-provider/theme-toggle";
+import internal from "@internal/index";
 import { DrawingPinFilledIcon, DrawingPinIcon } from "@radix-ui/react-icons";
 import { Button } from "@shadcn/component/ui/button";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@shadcn/component/ui/resizable";
@@ -11,7 +12,7 @@ const Page: React.FC = () => {
 	const [showEditor, setShowEditor] = React.useState<boolean>(true);
 	return <div className="w-screen h-screen flex flex-col">
 		<div className="w-full p-2 pt-6 flex justify-between items-center">
-			<div>AthenaBase</div>
+			<div>{internal.Name}</div>
 			<div>
 				<ThemeToggle />
 			</div>

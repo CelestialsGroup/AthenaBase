@@ -2,10 +2,11 @@ package logger
 
 import "fmt"
 
-func Error(a ...any) {
+func Debug(a ...any) {
 	fmt.Println(a...)
 }
-func Errorf(format string, a ...any) {
+
+func Debugf(format string, a ...any) {
 	fmt.Printf(format, a...)
 }
 
@@ -14,5 +15,12 @@ func Info(a ...any) {
 }
 
 func Infof(format string, a ...any) {
+	fmt.Printf(format, a...)
+}
+
+func Error(a ...any) {
+	fmt.Println(a...)
+}
+func Errorf(format string, a ...any) {
 	fmt.Printf(format, a...)
 }

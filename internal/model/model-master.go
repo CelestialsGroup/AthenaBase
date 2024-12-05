@@ -37,7 +37,7 @@ func MasterDB() *DB {
 		dbc := config.GetDataBaseConfig()
 		adbts := AllowDataBaseTypes()
 		if !internal.Contains(adbts, dbc.Type) {
-			panic(internal.SystemError(fmt.Errorf("database type is not supported: %s", dbc.Type)))
+			panic(internal.SystemError(fmt.Errorf("database type is not supported (%s)", dbc.Type)))
 		}
 
 		masterDB.Engine = dbc.Type

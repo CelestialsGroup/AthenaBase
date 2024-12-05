@@ -15,9 +15,7 @@ var (
 		Long:  "run server: api web",
 		Run: func(cmd *cobra.Command, args []string) {
 			ctx := context.Background()
-			go func(ctx context.Context) {
-				migrate.Migrate()
-			}(ctx)
+			migrate.Migrate()
 			server.Start(ctx)
 		},
 	}

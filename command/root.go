@@ -18,7 +18,9 @@ var (
 )
 
 func init() {
+	root.AddCommand(migration)
 	root.AddCommand(runserver)
+	root.AddCommand(createsuperuser)
 }
 
 func Execute() {

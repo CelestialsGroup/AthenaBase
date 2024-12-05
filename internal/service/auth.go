@@ -2,6 +2,9 @@ package service
 
 import (
 	"athenabase/internal"
+	"athenabase/internal/model"
+	"context"
+	"database/sql"
 	"encoding/hex"
 	"errors"
 	"strings"
@@ -35,6 +38,34 @@ func (auth) VerifyPassword(cipher, password string) error {
 	}
 
 	return nil
+}
+
+func (auth auth) ChechAuthUser(ctx context.Context, email string, password string) (*model.AuthUser, error) {
+	authUser := new(model.AuthUser)
+	err := model.MasterDB().NewSelect().Model(authUser).Where("email = ?", email).Scan(ctx)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, internal.AuthUserNotFoundError
+		}
+		return nil, err
+	}
+	err = auth.VerifyPassword(authUser.PassWord, password)
+	if err != nil {
+		return nil, err
+	}
+	return authUser, nil
+}
+
+func (auth) GenerateSession(ctx context.Context, authUser model.AuthUser) (*model.AuthSession, error) {
+	session := &model.AuthSession{
+		ID:         internal.RandomString(32),
+		AuthUserID: authUser.ID,
+	}
+	_, err := model.MasterDB().NewInsert().Model(session).Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return session, nil
 }
 
 var Auth = auth{}

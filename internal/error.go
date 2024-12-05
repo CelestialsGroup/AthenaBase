@@ -23,6 +23,13 @@ func ErrMsg(err error) string {
 var (
 	SystemErrorCode = 1000
 	SystemError     = func(err error) *InternalError {
-		return &InternalError{Code: SystemErrorCode, Message: "System Error: " + ErrMsg(err)}
+		return &InternalError{Code: SystemErrorCode, Message: "system error: " + ErrMsg(err)}
 	}
+
+	AuthErrorCode = 1100
+	AuthError     = func(err error) *InternalError {
+		return &InternalError{Code: AuthErrorCode, Message: "auth error: " + ErrMsg(err)}
+	}
+	AuthUserNotFoundErrorCode = 1101
+	AuthUserNotFoundError     = &InternalError{Code: AuthUserNotFoundErrorCode, Message: "auth error: user not found"}
 )
