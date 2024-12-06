@@ -9,6 +9,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/google/uuid"
 	"golang.org/x/crypto/argon2"
 )
 
@@ -56,13 +57,41 @@ func (auth auth) ChechAuthUser(ctx context.Context, email string, password strin
 	return authUser, nil
 }
 
-func (auth) GenerateSession(ctx context.Context, authUser model.AuthUser) (*model.AuthSession, error) {
+func (auth) GetUser(ctx context.Context, authUserID int64) (*model.AuthUser, error) {
+	authUser := new(model.AuthUser)
+	err := model.MasterDB().NewSelect().Model(authUser).Where("id = ?", authUserID).Scan(ctx)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, internal.AuthUserNotFoundError
+		}
+		return nil, err
+	}
+	return authUser, nil
+}
+
+func (auth) CreateSession(ctx context.Context, authUser *model.AuthUser) (*model.AuthSession, error) {
+	uid, err := uuid.NewV7()
+	if err != nil {
+		return nil, err
+	}
 	session := &model.AuthSession{
-		ID:         internal.RandomString(32),
+		ID:         uid.String(),
 		AuthUserID: authUser.ID,
 	}
-	_, err := model.MasterDB().NewInsert().Model(session).Exec(ctx)
+	_, err = model.MasterDB().NewInsert().Model(session).Exec(ctx)
 	if err != nil {
+		return nil, err
+	}
+	return session, nil
+}
+
+func (auth) GetSession(ctx context.Context, authSessionID string) (*model.AuthSession, error) {
+	session := new(model.AuthSession)
+	err := model.MasterDB().NewSelect().Model(session).Where("id = ?", authSessionID).Scan(ctx)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, internal.AuthSessionNotFoundError
+		}
 		return nil, err
 	}
 	return session, nil

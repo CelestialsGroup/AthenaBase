@@ -13,7 +13,3 @@ type Setting struct {
 	Key   string          `bun:"key,notnull,unique" sql:"type:varchar(64)"`
 	Value json.RawMessage `bun:"value" sql:"type:json"`
 }
-
-type VersionInfo struct {
-	Version string `json:"version"`
-}

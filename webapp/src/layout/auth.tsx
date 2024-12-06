@@ -1,16 +1,22 @@
 import api from "@internal/api";
+import helper from "@internal/helper";
+import Provider from "@internal/provider";
 import React from "react";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
+
 
 import Loading from "~/page/loading";
 
 const AuthLayout: React.FC = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
+	const { setSession } = Provider.useSession();
+	const navigate = useNavigate();
 
 	React.useEffect(() => {
 		api.auth.user().then(resp => {
-			console.log(resp);
-			window.location.href = "/auth/login";
+			setSession(session => ({ ...session, authUser: resp.data }));
+		}).catch(() => {
+			navigate(`/auth/login?${helper.MakeRedirectUri()}`);
 		}).finally(() => {
 			setLoading(false);
 		});
@@ -21,4 +27,12 @@ const AuthLayout: React.FC = () => {
 	</React.Fragment>;
 };
 
-export default AuthLayout;
+const AuthLayoutWithProvider: React.FC = () => {
+	return <React.Fragment>
+		<Provider.Session>
+			<AuthLayout />
+		</Provider.Session>
+	</React.Fragment>;
+};
+
+export default AuthLayoutWithProvider;

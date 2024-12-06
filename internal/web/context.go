@@ -1,15 +1,20 @@
 package web
 
-import "github.com/gin-gonic/gin"
+import (
+	"athenabase/internal/model"
+
+	"github.com/gin-gonic/gin"
+)
 
 const WebCtxKey = "web-ctx"
 
 type WebCtx struct {
 	ApiResp *WebApiRespCtx
+	Session *WebSessionCtx
 }
 
-func GetWebCtx(gin_ctx *gin.Context) *WebCtx {
-	value, exists := gin_ctx.Get(WebCtxKey)
+func GetWebCtx(ginCtx *gin.Context) *WebCtx {
+	value, exists := ginCtx.Get(WebCtxKey)
 	if exists {
 		wc, ok := value.(*WebCtx)
 		if ok {
@@ -17,11 +22,10 @@ func GetWebCtx(gin_ctx *gin.Context) *WebCtx {
 		}
 	}
 	wc := &WebCtx{
-		ApiResp: &WebApiRespCtx{
-			GinCtx: gin_ctx,
-		},
+		ApiResp: &WebApiRespCtx{GinCtx: ginCtx},
+		Session: &WebSessionCtx{GinCtx: ginCtx},
 	}
-	gin_ctx.Set(WebCtxKey, wc)
+	ginCtx.Set(WebCtxKey, wc)
 	return wc
 }
 
@@ -38,4 +42,32 @@ func (warc *WebApiRespCtx) Get() (value any, exists bool) {
 
 func (warc *WebApiRespCtx) Set(value any) {
 	warc.GinCtx.Set(WebApiRespCtxKey, value)
+}
+
+// web session context
+const WebSessionCtxKey = "web-session"
+
+type WebSessionCtx struct {
+	GinCtx *gin.Context
+}
+
+func (ws *WebSessionCtx) Get() *WebSession {
+	value, exists := ws.GinCtx.Get(WebSessionCtxKey)
+	if !exists {
+		return nil
+	}
+	session, ok := value.(*WebSession)
+	if !ok {
+		return nil
+	}
+	return session
+}
+
+func (ws *WebSessionCtx) Set(session *WebSession) {
+	ws.GinCtx.Set(WebSessionCtxKey, session)
+}
+
+type WebSession struct {
+	AuthUser    *model.AuthUser
+	AuthSession *model.AuthSession
 }

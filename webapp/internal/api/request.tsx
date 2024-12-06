@@ -17,7 +17,6 @@ class Request {
 				return requestUrl.searchParams.append(key, `${(init.query || {})[key]}`);
 			});
 		}
-		logger.debug(requestUrl);
 		return new Promise<RespData<T>>((resolve, reject) => fetch(
 			requestUrl.toString().replace("http://localhost", ""),
 			{

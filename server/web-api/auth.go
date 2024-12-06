@@ -11,12 +11,6 @@ import (
 func RegisterAuthRouter(group *gin.RouterGroup) {
 	authGroup := group.Group("/auth")
 
-	authGroup.GET("/user", func(ginCtx *gin.Context) {
-		web.GetWebCtx(ginCtx).ApiResp.Set(
-			internal.AuthUserNotFoundError,
-		)
-	})
-
 	authGroup.POST("/login", func(ginCtx *gin.Context) {
 		var body struct {
 			Email    string `json:"email"`
@@ -32,6 +26,17 @@ func RegisterAuthRouter(group *gin.RouterGroup) {
 			web.GetWebCtx(ginCtx).ApiResp.Set(err)
 			return
 		}
+		session, err := service.Auth.CreateSession(ctx, authUser)
+		if err != nil {
+			web.GetWebCtx(ginCtx).ApiResp.Set(err)
+			return
+		}
+		ginCtx.SetCookie(internal.AuthSessionCookieName, session.ID, 2147483647, "/", "", false, true)
 		web.GetWebCtx(ginCtx).ApiResp.Set(authUser)
+	})
+
+	authGroup.GET("/user", web.WebAuth(), func(ginCtx *gin.Context) {
+		session := web.GetWebCtx(ginCtx).Session.Get()
+		web.GetWebCtx(ginCtx).ApiResp.Set(session.AuthUser)
 	})
 }

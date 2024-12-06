@@ -30,6 +30,8 @@ var (
 	AuthError     = func(err error) *InternalError {
 		return &InternalError{Code: AuthErrorCode, Message: "auth error: " + ErrMsg(err)}
 	}
-	AuthUserNotFoundErrorCode = 1101
-	AuthUserNotFoundError     = &InternalError{Code: AuthUserNotFoundErrorCode, Message: "auth error: user not found"}
+	AuthUserNotFoundErrorCode    = 1101
+	AuthUserNotFoundError        = &InternalError{Code: AuthUserNotFoundErrorCode, Message: "auth error: user not found"}
+	AuthSessionNotFoundErrorCode = 1102
+	AuthSessionNotFoundError     = &InternalError{Code: AuthSessionNotFoundErrorCode, Message: "auth error: session not found"}
 )
