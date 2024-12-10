@@ -3,6 +3,8 @@ import { ThemeProvider } from "@component/theme-provider";
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
 
+import AdminLayout from "./layout/admin";
+
 import AuthLayout from "~/layout/auth";
 import Page from "~/page";
 
@@ -15,6 +17,11 @@ const Router: React.FC = () => {
 		<Route element={<AuthLayout />}>
 			<Route path="/" element={<Page.Home />} />
 			<Route path="/question" element={<Page.Question />} />
+
+			<Route element={<AdminLayout />}>
+				<Route path="/admin" element={<Page.Admin.Home />} />
+				<Route path="/admin/database" element={<Page.Admin.DataBase />} />
+			</Route>
 		</Route>
 		<Route path="/*" element={<Page.NotFound />} />
 	</Routes>;

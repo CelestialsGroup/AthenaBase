@@ -21,4 +21,5 @@ func RegisterRouterGroup(group *gin.RouterGroup) {
 	})
 
 	RegisterAuthRouter(group)
+	RegisterDataBaseRouter(group)
 }
