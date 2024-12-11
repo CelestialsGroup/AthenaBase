@@ -35,6 +35,11 @@ func RegisterAuthRouter(group *gin.RouterGroup) {
 		web.GetWebCtx(ginCtx).ApiResp.Set(authUser)
 	})
 
+	authGroup.GET("/logout", func(ginCtx *gin.Context) {
+		ginCtx.SetCookie(internal.AuthSessionCookieName, "", -1, "/", "", false, true)
+		web.GetWebCtx(ginCtx).ApiResp.Set(true)
+	})
+
 	authGroup.GET("/user", web.WebAuth(), func(ginCtx *gin.Context) {
 		session := web.GetWebCtx(ginCtx).Session.Get()
 		web.GetWebCtx(ginCtx).ApiResp.Set(session.AuthUser)

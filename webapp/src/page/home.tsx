@@ -1,10 +1,9 @@
-import Provider from "@internal/provider";
+import internal from "@internal/index";
 import React from "react";
 
 const Page: React.FC = () => {
-	const { session } = Provider.useSession();
-	return <div className="w-screen h-screen flex">
-		{session.authUser.name}
+	return <div className="w-full h-full flex justify-center items-center rounded-lg bg-muted/50">
+		Welcome to {internal.Name}
 	</div>;
 };
 

@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import MonacoContainer from "@component/monaco-editor/container";
 import React from "react";
 
@@ -50,7 +50,8 @@ const MonacoEditor: React.FC<MonacoEditorProps> = (props) => {
 				language: props.language,
 				value: props.value,
 				theme: `vs-${props.theme || "dark"}`,
-				readOnly: props.readOnly || false
+				readOnly: props.readOnly || false,
+				automaticLayout: true,
 			},
 		);
 		setEditor(monacoEditor);
@@ -121,7 +122,12 @@ const MonacoEditor: React.FC<MonacoEditorProps> = (props) => {
 		style={{ ...props.style }}
 		className={props.className || ""}
 		ref={container}
-		onResize={() => editor?.layout()}
+		onResize={() => {
+
+			// container.current?.style.display = "none";
+			// container.current?.style.display = "block";
+			editor?.layout();
+		}}
 	/>;
 };
 

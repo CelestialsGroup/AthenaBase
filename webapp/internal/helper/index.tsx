@@ -8,7 +8,7 @@ class Helper {
 		const redirectUri = this.ParseRedirectUri();
 		if (redirectUri != defaultRedirectUri) return `redirect_uri=${encodeURIComponent(redirectUri)}`;
 		const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-		return `redirect_uri=${encodeURIComponent(current)}`;
+		return `redirect_uri=${encodeURIComponent(current.startsWith("/auth/login") ? defaultRedirectUri : current)}`;
 	}
 
 	/**

@@ -4,7 +4,6 @@ import Provider from "@internal/provider";
 import React from "react";
 import { Outlet, useNavigate } from "react-router";
 
-
 import Loading from "~/page/loading";
 
 const AuthLayout: React.FC = () => {

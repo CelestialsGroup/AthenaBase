@@ -6,7 +6,8 @@ const auth = {
 		return request.api<AuthUser>("/auth/login").post({
 			body: JSON.stringify({ email, password })
 		});
-	}
+	},
+	logout: request.api<boolean>("/auth/logout").get,
 };
 
 export default auth;

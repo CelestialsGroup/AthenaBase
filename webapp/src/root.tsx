@@ -1,3 +1,4 @@
+import Dashboard from "@component/dashboard";
 import Notice from "@component/notice";
 import { ThemeProvider } from "@component/theme-provider";
 import React from "react";
@@ -8,6 +9,7 @@ import AdminLayout from "./layout/admin";
 import AuthLayout from "~/layout/auth";
 import Page from "~/page";
 
+
 const Router: React.FC = () => {
 	return <Routes>
 		<Route path="/setup" element={<Page.SetUp />} />
@@ -15,8 +17,11 @@ const Router: React.FC = () => {
 		<Route path="/auth/login" element={<Page.Auth.Login />} />
 
 		<Route element={<AuthLayout />}>
-			<Route path="/" element={<Page.Home />} />
-			<Route path="/question" element={<Page.Question />} />
+			<Route element={<Dashboard.Layout />}>
+				<Route path="/" element={<Page.Home />} />
+				<Route path="/auth/user" element={<Page.Auth.User />} />
+				<Route path="/question" element={<Page.Question />} />
+			</Route>
 
 			<Route element={<AdminLayout />}>
 				<Route path="/admin" element={<Page.Admin.Home />} />

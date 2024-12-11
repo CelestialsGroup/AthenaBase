@@ -19,7 +19,8 @@ const initialState: SessionProviderState = {
 		authUser: {
 			id: 0,
 			name: "",
-			email: ""
+			email: "",
+			avatar: "",
 		}
 	},
 	setSession: () => null,
@@ -32,7 +33,8 @@ const SessionProvider: React.FC<SessionProviderProps> = ({ children, ...props })
 		authUser: {
 			id: 0,
 			name: "",
-			email: ""
+			email: "",
+			avatar: "",
 		}
 	});
 	return <SessionProviderContext.Provider {...props} value={{ session, setSession }}>
