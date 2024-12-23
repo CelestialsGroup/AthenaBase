@@ -1,5 +1,5 @@
 import Common from "@component/common";
-import AppSidebar from "@component/dashboard/app-sidebar";
+import Dashboard from "@component/dashboard";
 import internal from "@internal/index";
 import {
 	Breadcrumb, BreadcrumbList, BreadcrumbItem,
@@ -12,11 +12,11 @@ import {
 import React from "react";
 import { Outlet } from "react-router";
 
-const Layout: React.FC = () => {
+const DashboardLayout: React.FC = () => {
 	return <SidebarProvider>
-		<AppSidebar />
-		<SidebarInset>
-			<header className="flex h-16 shrink-0 items-center gap-2 justify-between">
+		<Dashboard.AppSidebar />
+		<SidebarInset style={{ height: "calc(100svh - 1rem)" }} className="p-4">
+			<header className="sticky top-0 flex h-16 shrink-0 items-center gap-2 justify-between backdrop-blur-lg bg-background/10">
 				<div className="flex items-center gap-2 px-4">
 					<SidebarTrigger className="-ml-1" />
 					<Separator orientation="vertical" className="mr-2 h-4" />
@@ -33,14 +33,12 @@ const Layout: React.FC = () => {
 					</Breadcrumb>
 				</div>
 				<div className="flex items-center gap-2 px-4">
-					<Common.FullScreen /> <Common.ThemeToggle />
+					<Common.FullScreen /> <Common.ThemeToggle /> <Common.Logout />
 				</div>
 			</header>
-			<main className="flex flex-1 flex-col gap-4 p-4 pt-0">
-				<Outlet />
-			</main>
+			<div className="flex-1 overflow-auto"><Outlet /></div>
 		</SidebarInset>
 	</SidebarProvider>;
 };
 
-export default Layout;
+export default DashboardLayout;

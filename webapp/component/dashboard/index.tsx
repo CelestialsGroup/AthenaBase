@@ -1,5 +1,6 @@
-import Layout from "@component/dashboard/layout";
+import AppSidebar from "./app-sidebar";
+import NavUser from "./nav-user";
 
 export default {
-	Layout
+	AppSidebar, NavUser
 };
