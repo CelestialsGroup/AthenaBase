@@ -26,4 +26,6 @@ else
     nvm install $(cat webapp/.nvmrc) && nvm use $(cat webapp/.nvmrc) && npm install -g yarn && npm install -g eslint
 fi
 node_version=$(node --version)
-echo -e "\033[32m${node_version}\033[0m"
+echo -e "\033[32mNode version: ${node_version}\033[0m"
+
+echo "Restart this terminal."
