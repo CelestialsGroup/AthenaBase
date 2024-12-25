@@ -3,5 +3,5 @@ interface QueryResult {
 		name: string
 		type: string
 	}[]
-	results: { [key: string]: string }[]
+	results: string[][]
 }

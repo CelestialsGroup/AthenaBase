@@ -1,5 +1,6 @@
 import MonacoEditor from "@component/monaco-editor";
 import notice from "@component/notice";
+import Query from "@component/query";
 import api from "@internal/api";
 import logger from "@internal/helper/logger";
 import { DrawingPinFilledIcon, DrawingPinIcon } from "@radix-ui/react-icons";
@@ -17,6 +18,7 @@ const Page: React.FC = () => {
 	const [stmt, setStmt] = React.useState<string>("-- Enter your sql here --\n");
 	const [selectedStmt, setSelectedStmt] = React.useState<string>("");
 	const [loading, setLoading] = React.useState<boolean>(false);
+	const [result, setResult] = React.useState<QueryResult>();
 
 	React.useEffect(() => {
 		api.database.list().then(resp => setDbs(resp.data)).catch(reason => notice.toast.error(`${reason}`));
@@ -31,6 +33,7 @@ const Page: React.FC = () => {
 		logger.info("query: ", stmt);
 		api.query(db.id, stmt).then(resp => {
 			logger.info("query result:", resp);
+			setResult(resp.data);
 		}).catch(
 			reason => notice.toast.error(`${reason}`)
 		).finally(
@@ -69,8 +72,8 @@ const Page: React.FC = () => {
 				/>
 			</ResizablePanel>
 			<ResizableHandle withHandle className={!showEditor ? "hidden" : ""} />
-			<ResizablePanel minSize={25} className="flex justify-center items-center">
-				Your results will be displayed here.
+			<ResizablePanel minSize={25} className="flex justify-center items-center overflow-hidden w-full max-w-full">
+				{result ? <Query.Result result={result} /> : <div>Your results will be displayed here</div>}
 			</ResizablePanel>
 		</ResizablePanelGroup>}
 		{!db?.id && <div className="flex-1 flex flex-col justify-center items-center">Please select query database.</div>}
