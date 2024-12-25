@@ -1,4 +1,4 @@
-import CreateDialog from "@component/database/create-dialog";
-import CreateForm from "@component/database/create-form";
+import Dialog from "@component/database/dialog";
+import Form from "@component/database/form";
 
-export default { CreateForm, CreateDialog };
+export default { Form, Dialog };

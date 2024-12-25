@@ -1,3 +1,4 @@
+import AppSidebarContent from "@component/dashboard/app-sidebar-content";
 import NavUser from "@component/dashboard/nav-user";
 import internal from "@internal/index";
 import {
@@ -33,9 +34,7 @@ const AppSidebar: React.FC<React.ComponentProps<typeof Sidebar>> = ({ ...props }
 			</SidebarMenu>
 		</SidebarHeader>
 		<SidebarContent>
-			{/* <NavMain items={data.navMain} />
-				<NavProjects projects={data.projects} />
-				<NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+			<AppSidebarContent />
 		</SidebarContent>
 		<SidebarFooter>
 			<NavUser />

@@ -20,14 +20,23 @@ const Page: React.FC = () => {
 				</h4>
 			</div>
 			<div>
-				<Database.CreateDialog />
+				<Database.Dialog
+					trigger={<Button>Create Database</Button>}
+					title="Create DataBase"
+					desc="create a database config."
+				/>
 			</div>
 		</div>
 		<div className="flex-1 w-full">
 			{dbs.map((db, index) => <div key={index} className="flex justify-between items-center">
 				<div>{db.name}</div>
 				<div className="flex space-x-1">
-					<Button>Edit</Button>
+					<Database.Dialog
+						trigger={<Button>Edit</Button>}
+						database={db}
+						title={`Edit ${db.name}`}
+						desc={`edit ${db.name} config.`}
+					/>
 					<Button variant="destructive">Delete</Button>
 				</div>
 			</div>)}
