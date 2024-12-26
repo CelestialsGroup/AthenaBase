@@ -15,7 +15,7 @@ import { Outlet } from "react-router";
 const DashboardLayout: React.FC = () => {
 	return <SidebarProvider>
 		<Dashboard.AppSidebar />
-		<SidebarInset style={{ height: "calc(100svh - 1rem)" }} className="p-4">
+		<SidebarInset style={{ height: "calc(100svh - 1rem)" }} className="p-4 overflow-auto">
 			<header className="sticky top-0 flex h-16 shrink-0 items-center gap-2 justify-between backdrop-blur-lg bg-background/10">
 				<div className="flex items-center gap-2 px-4">
 					<SidebarTrigger className="-ml-1" />
@@ -36,7 +36,7 @@ const DashboardLayout: React.FC = () => {
 					<Common.FullScreen /> <Common.ThemeToggle /> <Common.Logout />
 				</div>
 			</header>
-			<div className="flex-1 overflow-auto"><Outlet /></div>
+			<Outlet />
 		</SidebarInset>
 	</SidebarProvider>;
 };

@@ -1,5 +1,5 @@
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@component/ui/table";
 import logger from "@internal/helper/logger";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@shadcn/component/ui/table";
 import {
 	getCoreRowModel,
 	useReactTable,
@@ -10,6 +10,7 @@ import React from "react";
 
 interface ResultProps {
 	result: QueryResult
+	className?: string
 }
 
 type TableRowData = { [key: number]: string };
@@ -43,36 +44,34 @@ const Result: React.FC<ResultProps> = (props) => {
 		getCoreRowModel: getCoreRowModel(),
 	});
 
-	return <div className="w-full h-full border rounded-lg">
-		<Table>
-			<TableHeader>
-				{table.getHeaderGroups().map((headerGroup) => <TableRow key={headerGroup.id}>
-					{headerGroup.headers.map((header) => <TableHead key={header.id}>
-						{header.isPlaceholder
-							? null
-							: flexRender(
-								header.column.columnDef.header,
-								header.getContext()
+	return <Table className={props.className}>
+		<TableHeader>
+			{table.getHeaderGroups().map((headerGroup) => <TableRow key={headerGroup.id}>
+				{headerGroup.headers.map((header) => <TableHead key={header.id}>
+					{header.isPlaceholder
+						? null
+						: flexRender(
+							header.column.columnDef.header,
+							header.getContext()
+						)}
+				</TableHead>)}
+			</TableRow>)}
+		</TableHeader>
+		<TableBody>
+			{table.getRowModel().rows.map((row) => (
+				<TableRow key={row.id} >
+					{row.getVisibleCells().map((cell) => (
+						<TableCell key={cell.id}>
+							{flexRender(
+								cell.column.columnDef.cell,
+								cell.getContext()
 							)}
-					</TableHead>)}
-				</TableRow>)}
-			</TableHeader>
-			<TableBody>
-				{table.getRowModel().rows.map((row) => (
-					<TableRow key={row.id} >
-						{row.getVisibleCells().map((cell) => (
-							<TableCell key={cell.id}>
-								{flexRender(
-									cell.column.columnDef.cell,
-									cell.getContext()
-								)}
-							</TableCell>
-						))}
-					</TableRow>
-				))}
-			</TableBody>
-		</Table>
-	</div>;
+						</TableCell>
+					))}
+				</TableRow>
+			))}
+		</TableBody>
+	</Table>;
 };
 
 export default Result;

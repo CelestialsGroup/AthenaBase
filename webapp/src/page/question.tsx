@@ -41,7 +41,7 @@ const Page: React.FC = () => {
 		);
 	};
 
-	return <div className="w-full h-full flex flex-col p-2">
+	return <div className="flex-1 flex flex-col">
 		<div className="flex justify-between items-center p-2 bg-muted/50 rounded-lg">
 			<div className="flex space-x-2 items-center">
 				<Select onValueChange={(value) => setDb(dbs.find(d => d.id.toString() === value))}>
@@ -62,7 +62,7 @@ const Page: React.FC = () => {
 			</div>
 		</div>
 		<Separator className="my-1" />
-		{db?.id && <ResizablePanelGroup direction="vertical" className="flex-1">
+		{db?.id && <ResizablePanelGroup direction="vertical" className="flex-1 overflow-auto">
 			<ResizablePanel minSize={25} className={`relative ${!showEditor ? "hidden" : ""}`}>
 				<MonacoEditor
 					className="w-full h-full border rounded-lg"
@@ -72,8 +72,11 @@ const Page: React.FC = () => {
 				/>
 			</ResizablePanel>
 			<ResizableHandle withHandle className={!showEditor ? "hidden" : ""} />
-			<ResizablePanel minSize={25} className="flex justify-center items-center overflow-hidden w-full max-w-full">
-				{result ? <Query.Result result={result} /> : <div>Your results will be displayed here</div>}
+			<ResizablePanel minSize={25} className="flex flex-col">
+				<div className="flex-1 overflow-auto border rounded-lg">
+					{result ? <Query.Result className="w-fit min-w-full" result={result} /> : <div>Your results will be displayed here</div>}
+				</div>
+				<div className="pt-2">statebar</div>
 			</ResizablePanel>
 		</ResizablePanelGroup>}
 		{!db?.id && <div className="flex-1 flex flex-col justify-center items-center">Please select query database.</div>}
