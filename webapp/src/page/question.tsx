@@ -73,10 +73,23 @@ const Page: React.FC = () => {
 			</ResizablePanel>
 			<ResizableHandle withHandle className={!showEditor ? "hidden" : ""} />
 			<ResizablePanel minSize={25} className="flex flex-col">
-				<div className="flex-1 overflow-auto border rounded-lg">
-					{result ? <Query.Result className="w-fit min-w-full" result={result} /> : <div>Your results will be displayed here</div>}
+				<div className={
+					"flex-1 overflow-auto border rounded-lg " +
+					"scrollbar-thin scrollbar-thumb-muted/90 scrollbar-track-background/10"
+				}>
+					{result ?
+						<Query.Result className="w-fit min-w-full" result={result} />
+						:
+						<div className="w-full h-full flex justify-center items-center">
+							Your results will be displayed here
+						</div>
+					}
 				</div>
-				<div className="pt-2">statebar</div>
+				<div className="pt-2 flex justify-between">
+					<div>state</div>
+					<div>grid</div>
+					<div>{result?.results.length}</div>
+				</div>
 			</ResizablePanel>
 		</ResizablePanelGroup>}
 		{!db?.id && <div className="flex-1 flex flex-col justify-center items-center">Please select query database.</div>}

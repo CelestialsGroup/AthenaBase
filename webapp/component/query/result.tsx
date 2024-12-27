@@ -1,5 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@component/ui/table";
 import logger from "@internal/helper/logger";
+import { Badge } from "@shadcn/component/ui/badge";
 import {
 	getCoreRowModel,
 	useReactTable,
@@ -31,10 +32,15 @@ const Result: React.FC<ResultProps> = (props) => {
 				accessorKey: rowKey,
 				header: (context) => {
 					logger.debug(context);
-					return <div>{col.name} ({col.type.toLowerCase()})</div>;
+					return <div className="text-center">
+						<Badge variant="outline">{col.name}</Badge>
+						{/* {col.type.toLowerCase()} */}
+					</div>;
 				},
 				cell: ({ row }) => {
-					return <div className="capitalize">{row.getValue(rowKey)}</div>;
+					return <div
+						className="max-w-96 text-center whitespace-nowrap overflow-auto scrollbar-none hover:bg-muted/50 p-2 rounded-lg cursor-pointer"
+					>{row.getValue(rowKey)}</div>;
 				},
 			};
 		});
@@ -45,7 +51,7 @@ const Result: React.FC<ResultProps> = (props) => {
 	});
 
 	return <Table className={props.className}>
-		<TableHeader>
+		<TableHeader className="sticky top-0 bg-muted/80 backdrop-blur rounded-lg">
 			{table.getHeaderGroups().map((headerGroup) => <TableRow key={headerGroup.id}>
 				{headerGroup.headers.map((header) => <TableHead key={header.id}>
 					{header.isPlaceholder
@@ -59,7 +65,7 @@ const Result: React.FC<ResultProps> = (props) => {
 		</TableHeader>
 		<TableBody>
 			{table.getRowModel().rows.map((row) => (
-				<TableRow key={row.id} >
+				<TableRow key={row.id} className="hover:bg-transparent">
 					{row.getVisibleCells().map((cell) => (
 						<TableCell key={cell.id}>
 							{flexRender(

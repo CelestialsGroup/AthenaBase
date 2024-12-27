@@ -27,7 +27,7 @@ export default tseslint.config(
 			],
 			"quotes": ["error", "double"],
 			"semi": ["error", "always"],
-			"indent": ["error", "tab"],
+			"indent": ["error", "tab", { SwitchCase: 1 }],
 			"import/order": [
 				"error",
 				{
