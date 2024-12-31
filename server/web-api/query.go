@@ -1,8 +1,8 @@
 package webapi
 
 import (
+	"athenabase/internal"
 	"athenabase/internal/model"
-	"athenabase/internal/service"
 	"athenabase/internal/web"
 	"database/sql"
 	"fmt"
@@ -33,7 +33,7 @@ func RegisterQueryRouter(group *gin.RouterGroup) {
 			return
 		}
 
-		db, err := service.Core.GetDataBase(database.DriverName(), database.DSN())
+		db, err := internal.Core.GetDataBase(database.DriverName(), database.DSN())
 		if err != nil {
 			web.GetWebCtx(ginCtx).ApiResp.Set(err)
 			return

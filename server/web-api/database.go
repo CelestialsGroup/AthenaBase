@@ -38,4 +38,26 @@ func RegisterDataBaseRouter(group *gin.RouterGroup) {
 		web.GetWebCtx(ginCtx).ApiResp.Set(db)
 	})
 
+	dataBaseGroup.GET("/:id/table", func(ginCtx *gin.Context) {
+		var param struct {
+			ID int64 `uri:"id" binding:"required"`
+		}
+		if err := ginCtx.ShouldBindUri(&param); err != nil {
+			web.GetWebCtx(ginCtx).ApiResp.Set(err)
+			return
+		}
+		ctx := ginCtx.Request.Context()
+		database, err := service.DataBase.GetDataBase(ctx, param.ID)
+		if err != nil {
+			web.GetWebCtx(ginCtx).ApiResp.Set(err)
+			return
+		}
+		tables, err := service.DataBase.GetTables(ctx, database)
+		if err != nil {
+			web.GetWebCtx(ginCtx).ApiResp.Set(err)
+			return
+		}
+		web.GetWebCtx(ginCtx).ApiResp.Set(tables)
+	})
+
 }

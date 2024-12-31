@@ -6,6 +6,9 @@ const database = {
 		return request.api<DataBase>("/database").post({
 			body: JSON.stringify({ ...database })
 		});
+	},
+	table: (id: number) => {
+		return request.api<DataBaseTable[]>(`/database/${id}/table`).get();
 	}
 };
 

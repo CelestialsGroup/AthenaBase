@@ -9,3 +9,16 @@ interface DataBase {
 	password: string
 	config: string
 }
+
+
+interface DataBaseTableColumn {
+	name: string
+	type: string
+	comment: string
+}
+
+interface DataBaseTable {
+	name: string
+	columns: DataBaseTableColumn[]
+	comment: string
+}
