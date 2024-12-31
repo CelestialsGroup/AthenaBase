@@ -3,12 +3,11 @@ import notice from "@component/notice";
 import Query from "@component/query";
 import api from "@internal/api";
 import logger from "@internal/helper/logger";
-import { DrawingPinFilledIcon, DrawingPinIcon } from "@radix-ui/react-icons";
 import { Button } from "@shadcn/component/ui/button";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@shadcn/component/ui/resizable";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@shadcn/component/ui/select";
 import { Separator } from "@shadcn/component/ui/separator";
-import { Loader2, Play } from "lucide-react";
+import { Code2Icon, CodeIcon, Loader2, Play } from "lucide-react";
 import { editor } from "monaco-editor";
 import React from "react";
 
@@ -74,7 +73,6 @@ const Page: React.FC = () => {
 							endColumn: position.column
 						}
 					}));
-
 				return { suggestions: suggestions };
 			}
 		});
@@ -91,20 +89,18 @@ const Page: React.FC = () => {
 						{dbs.map((db) => <SelectItem key={db.id} value={db.id.toString()}>{db.name}</SelectItem>)}
 					</SelectContent>
 				</Select>
-				{db?.id && <Button size="icon" disabled={loading} onClick={() => query(selectedStmt || stmt)}
-				>{loading ? <Loader2 className="animate-spin" /> : <Play />}</Button>}
 			</div>
 			<div>
 				<Button variant="ghost" size="icon" onClick={() => setShowEditor(se => !se)}>
-					{showEditor ? <DrawingPinFilledIcon /> : <DrawingPinIcon />}
+					{showEditor ? <CodeIcon /> : <Code2Icon />}
 				</Button>
 			</div>
 		</div>
-		<Separator className="my-1" />
+		<Separator className="my-2" />
 		{db?.id && <ResizablePanelGroup direction="vertical" className="flex-1 overflow-auto">
-			<ResizablePanel minSize={25} className={`relative ${!showEditor ? "hidden" : ""}`}>
+			<ResizablePanel minSize={25} className={`relative ${!showEditor ? "hidden" : ""} flex`}>
 				<MonacoEditor
-					className="w-full h-full border rounded-lg"
+					className="flex-1 overflow-auto scrollbar-none h-full border rounded-lg"
 					theme="dark" language="sql"
 					value={stmt} onValueChange={(value) => setStmt(value)}
 					onSelectedValueChange={(value) => setSelectedStmt(value)}
@@ -112,8 +108,15 @@ const Page: React.FC = () => {
 						setMonaco(monaco); setEditor(editor);
 					}}
 				/>
+				<div className="flex flex-col p-2">
+					<div className="flex-1"></div>
+					<div>
+						{db?.id && <Button size="icon" disabled={loading} onClick={() => query(selectedStmt || stmt)}
+						>{loading ? <Loader2 className="animate-spin" /> : <Play />}</Button>}
+					</div>
+				</div>
 			</ResizablePanel>
-			<ResizableHandle withHandle className={!showEditor ? "hidden" : ""} />
+			<ResizableHandle withHandle className={`${!showEditor ? "hidden" : ""} my-2`} />
 			<ResizablePanel minSize={25} className="flex flex-col">
 				<div className={
 					"flex-1 overflow-auto border rounded-lg " +
