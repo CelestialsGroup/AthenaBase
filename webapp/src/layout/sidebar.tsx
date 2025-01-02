@@ -1,5 +1,5 @@
 import Common from "@component/common";
-import Dashboard from "@component/dashboard";
+import Sidebar from "@component/sidebar";
 import internal from "@internal/index";
 import {
 	Breadcrumb, BreadcrumbList, BreadcrumbItem,
@@ -12,9 +12,9 @@ import {
 import React from "react";
 import { Outlet } from "react-router";
 
-const DashboardLayout: React.FC = () => {
+const SidebarLayout: React.FC = () => {
 	return <SidebarProvider>
-		<Dashboard.AppSidebar />
+		<Sidebar.AppSidebar />
 		<SidebarInset style={{ height: "calc(100svh - 1rem)" }} className="p-4 overflow-auto">
 			<header className="sticky top-0 flex h-16 shrink-0 items-center gap-2 justify-between backdrop-blur-lg bg-background/10">
 				<div className="flex items-center gap-2 px-4">
@@ -41,4 +41,4 @@ const DashboardLayout: React.FC = () => {
 	</SidebarProvider>;
 };
 
-export default DashboardLayout;
+export default SidebarLayout;

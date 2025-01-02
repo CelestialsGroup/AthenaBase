@@ -1,5 +1,5 @@
-import AppSidebarContent from "@component/dashboard/app-sidebar-content";
-import NavUser from "@component/dashboard/nav-user";
+import AppSidebarContent from "@component/sidebar/app-sidebar-content";
+import NavUser from "@component/sidebar/nav-user";
 import internal from "@internal/index";
 import {
 	Sidebar,
