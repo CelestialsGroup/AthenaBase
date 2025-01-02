@@ -1,10 +1,10 @@
+import Common from "@component/common";
 import api from "@internal/api";
 import helper from "@internal/helper";
 import Provider from "@internal/provider";
 import React from "react";
 import { Outlet, useNavigate } from "react-router";
 
-import Loading from "~/page/loading";
 
 const AuthLayout: React.FC = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
@@ -22,7 +22,7 @@ const AuthLayout: React.FC = () => {
 	}, []);
 
 	return <React.Fragment>
-		{loading ? <Loading /> : <Outlet />}
+		{loading ? <Common.Loading /> : <Outlet />}
 	</React.Fragment>;
 };
 

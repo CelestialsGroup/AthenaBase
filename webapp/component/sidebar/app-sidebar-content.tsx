@@ -10,8 +10,8 @@ const AppSidebarContent: React.FC = () => {
 				<SidebarMenu>
 					<SidebarMenuItem >
 						<SidebarMenuButton asChild size="sm">
-							<Link to="/question" className="items-center py-2">
-								<MagicWandIcon /> <span className="pb-1">Question</span>
+							<Link to="/query" className="items-center py-2">
+								<MagicWandIcon /> <span className="pb-1">Query</span>
 							</Link>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
