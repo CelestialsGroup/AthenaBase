@@ -1,4 +1,3 @@
-import MonacoEditor from "@component/monaco-editor";
 import notice from "@component/notice";
 import Query from "@component/query";
 import api from "@internal/api";
@@ -8,7 +7,6 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@shadcn/co
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@shadcn/component/ui/select";
 import { Separator } from "@shadcn/component/ui/separator";
 import { Code2Icon, CodeIcon, Loader2, Play } from "lucide-react";
-import { editor } from "monaco-editor";
 import React from "react";
 
 const Page: React.FC = () => {
@@ -19,10 +17,6 @@ const Page: React.FC = () => {
 	const [selectedStmt, setSelectedStmt] = React.useState<string>("");
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [result, setResult] = React.useState<QueryResult>();
-
-	const [tables, setTables] = React.useState<string[]>([]);
-	const [monaco, setMonaco] = React.useState<typeof import("monaco-editor") | null>(null);
-	const [editor, setEditor] = React.useState<editor.IStandaloneCodeEditor | null>(null);
 
 	React.useEffect(() => {
 		api.database.list().then(resp => setDbs(resp.data)).catch(reason => notice.toast.error(`${reason}`));
@@ -45,39 +39,6 @@ const Page: React.FC = () => {
 		);
 	};
 
-	React.useEffect(() => {
-		if (!db?.id) return;
-		api.database.table(db.id).then(resp => {
-			setTables(resp.data.map(table => table.name));
-		}).catch(
-			reason => notice.toast.error(`${reason}`)
-		);
-	}, [db?.id]);
-
-	React.useEffect(() => {
-		if (tables.length === 0 || !monaco || !editor) return;
-
-		monaco.languages.registerCompletionItemProvider("sql", {
-			provideCompletionItems: function (model, position) {
-				const word = model.getWordUntilPosition(position);
-				const suggestions = tables
-					.filter(table => table.indexOf(word.word) >= 0)
-					.map(table => ({
-						label: table,
-						kind: monaco.languages.CompletionItemKind.Text,
-						insertText: table,
-						range: {
-							startLineNumber: position.lineNumber,
-							startColumn: word.startColumn,
-							endLineNumber: position.lineNumber,
-							endColumn: position.column
-						}
-					}));
-				return { suggestions: suggestions };
-			}
-		});
-	}, [tables, monaco, editor]);
-
 	return <div className="flex-1 flex flex-col">
 		<div className="flex justify-between items-center p-2 bg-muted/50 rounded-lg">
 			<div className="flex space-x-2 items-center">
@@ -99,14 +60,9 @@ const Page: React.FC = () => {
 		<Separator className="my-2" />
 		{db?.id && <ResizablePanelGroup direction="vertical" className="flex-1 overflow-auto">
 			<ResizablePanel minSize={25} className={`relative ${!showEditor ? "hidden" : ""} flex`}>
-				<MonacoEditor
-					className="flex-1 overflow-auto scrollbar-none h-full border rounded-lg"
-					theme="dark" language="sql"
+				<Query.Editor database={db}
 					value={stmt} onValueChange={(value) => setStmt(value)}
 					onSelectedValueChange={(value) => setSelectedStmt(value)}
-					onMount={(monaco, editor) => {
-						setMonaco(monaco); setEditor(editor);
-					}}
 				/>
 				<div className="flex flex-col p-2">
 					<div className="flex-1"></div>
