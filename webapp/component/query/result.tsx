@@ -34,7 +34,7 @@ const Result: React.FC<ResultProps> = (props) => {
 					logger.debug(context);
 					return <div className="text-center">
 						<Badge variant="outline">{col.name}</Badge>
-						{/* {col.type.toLowerCase()} */}
+						{col.type.toLowerCase()}
 					</div>;
 				},
 				cell: ({ row }) => {

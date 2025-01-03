@@ -25,7 +25,7 @@ const Page: React.FC = () => {
 	const [editor, setEditor] = React.useState<editor.IStandaloneCodeEditor | null>(null);
 
 	React.useEffect(() => {
-		api.database.list().then(resp => setDbs(resp.data)).catch(reason => notice.toast.error(`${reason}`));
+		api.database.list().then(resp => setDbs(resp.data||[])).catch(reason => notice.toast.error(`${reason}`));
 	}, []);
 
 	const query = (stmt: string) => {
@@ -48,7 +48,7 @@ const Page: React.FC = () => {
 	React.useEffect(() => {
 		if (!db?.id) return;
 		api.database.table(db.id).then(resp => {
-			setTables(resp.data.map(table => table.name));
+			setTables(resp.data?.map(table => table.name)|| []);
 		}).catch(
 			reason => notice.toast.error(`${reason}`)
 		);
@@ -86,7 +86,7 @@ const Page: React.FC = () => {
 						<SelectValue placeholder="Select Database" />
 					</SelectTrigger>
 					<SelectContent>
-						{dbs.map((db) => <SelectItem key={db.id} value={db.id.toString()}>{db.name}</SelectItem>)}
+						{dbs?.map((db) => <SelectItem key={db.id} value={db.id.toString()}>{db.name}</SelectItem>)}
 					</SelectContent>
 				</Select>
 			</div>
