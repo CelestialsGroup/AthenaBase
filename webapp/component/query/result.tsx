@@ -8,7 +8,7 @@ import {
 	ColumnDef
 } from "@tanstack/react-table";
 import React from "react";
-
+import { Tooltip, TooltipContent, TooltipTrigger } from "@shadcn/component/ui/tooltip"; // 导入 Tooltip 组件
 interface ResultProps {
 	result: QueryResult
 	className?: string
@@ -32,10 +32,18 @@ const Result: React.FC<ResultProps> = (props) => {
 				accessorKey: rowKey,
 				header: (context) => {
 					logger.debug(context);
-					return <div className="text-center">
-						<Badge variant="outline">{col.name}</Badge>
-						{col.type.toLowerCase()}
-					</div>;
+					return (
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<div className="text-center">
+									<Badge variant="outline">{col.name}</Badge>
+								</div>
+							</TooltipTrigger>
+							<TooltipContent>
+								{col.type.toLowerCase()}
+							</TooltipContent>
+						</Tooltip>
+					);
 				},
 				cell: ({ row }) => {
 					return <div
