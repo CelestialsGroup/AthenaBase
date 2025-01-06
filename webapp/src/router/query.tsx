@@ -7,6 +7,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@shadcn/co
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@shadcn/component/ui/select";
 import { Separator } from "@shadcn/component/ui/separator";
 import { Code2Icon, CodeIcon, Loader2, Play } from "lucide-react";
+import * as monaco from "monaco-editor";
 import React from "react";
 
 const Page: React.FC = () => {
@@ -16,7 +17,7 @@ const Page: React.FC = () => {
 	const [stmt, setStmt] = React.useState<string>("-- Enter your sql here --\n");
 	const [selectedStmt, setSelectedStmt] = React.useState<string>("");
 	const [loading, setLoading] = React.useState<boolean>(false);
-	const [result, setResult] = React.useState<QueryResult>();
+	const [resp, setResp] = React.useState<RespData<QueryResult>>();
 
 	React.useEffect(() => {
 		api.database.list().then(resp => setDbs(resp.data)).catch(reason => notice.toast.error(`${reason}`));
@@ -31,7 +32,7 @@ const Page: React.FC = () => {
 		logger.info("query: ", stmt);
 		api.query(db.id, stmt).then(resp => {
 			logger.info("query result:", resp);
-			setResult(resp.data);
+			setResp(resp);
 		}).catch(
 			reason => notice.toast.error(`${reason}`)
 		).finally(
@@ -50,6 +51,8 @@ const Page: React.FC = () => {
 						{dbs.map((db) => <SelectItem key={db.id} value={db.id.toString()}>{db.name}</SelectItem>)}
 					</SelectContent>
 				</Select>
+				{db?.id && <Button size="icon" disabled={loading} onClick={() => query(selectedStmt || stmt)}
+				>{loading ? <Loader2 className="animate-spin" /> : <Play />}</Button>}
 			</div>
 			<div>
 				<Button variant="ghost" size="icon" onClick={() => setShowEditor(se => !se)}>
@@ -59,18 +62,20 @@ const Page: React.FC = () => {
 		</div>
 		<Separator className="my-2" />
 		{db?.id && <ResizablePanelGroup direction="vertical" className="flex-1 overflow-auto">
-			<ResizablePanel minSize={25} className={`relative ${!showEditor ? "hidden" : ""} flex`}>
+			<ResizablePanel minSize={25} className={`relative ${!showEditor ? "hidden" : ""}`}>
 				<Query.Editor database={db}
 					value={stmt} onValueChange={(value) => setStmt(value)}
 					onSelectedValueChange={(value) => setSelectedStmt(value)}
+					actions={{
+						"query": {
+							label: "QueryCommand",
+							keybindings: [
+								monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter,
+							],
+							run: () => query(selectedStmt || stmt),
+						}
+					}}
 				/>
-				<div className="flex flex-col p-2">
-					<div className="flex-1"></div>
-					<div>
-						{db?.id && <Button size="icon" disabled={loading} onClick={() => query(selectedStmt || stmt)}
-						>{loading ? <Loader2 className="animate-spin" /> : <Play />}</Button>}
-					</div>
-				</div>
 			</ResizablePanel>
 			<ResizableHandle withHandle className={`${!showEditor ? "hidden" : ""} my-2`} />
 			<ResizablePanel minSize={25} className="flex flex-col">
@@ -78,8 +83,8 @@ const Page: React.FC = () => {
 					"flex-1 overflow-auto border rounded-lg " +
 					"scrollbar-thin scrollbar-thumb-muted/90 scrollbar-track-background/10"
 				}>
-					{result ?
-						<Query.Result className="w-fit min-w-full" result={result} />
+					{resp?.data ?
+						<Query.Result className="w-fit min-w-full" result={resp.data} />
 						:
 						<div className="w-full h-full flex justify-center items-center">
 							Your results will be displayed here
@@ -89,7 +94,7 @@ const Page: React.FC = () => {
 				<div className="pt-2 flex justify-between">
 					<div>state</div>
 					<div>grid</div>
-					<div>{result?.results.length}</div>
+					{resp ? <div>{resp.data?.results.length}/{resp.latency}ms</div> : <div>--:--</div>}
 				</div>
 			</ResizablePanel>
 		</ResizablePanelGroup>}

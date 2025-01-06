@@ -1,12 +1,14 @@
 import MonacoEditor from "@component/monaco-editor";
 import notice from "@component/notice";
 import api from "@internal/api";
-import { editor } from "monaco-editor";
+import logger from "@internal/helper/logger";
+import { editor, IDisposable } from "monaco-editor";
 import React from "react";
 
 interface QueryEditorProps {
 	database: DataBase
 	value: string
+	actions?: { [key: string]: Omit<editor.IActionDescriptor, "id"> }
 	onValueChange?: (value: string) => void
 	onSelectedValueChange?: (value: string) => void
 }
@@ -24,6 +26,29 @@ const QueryEditor: React.FC<QueryEditorProps> = (props) => {
 			reason => notice.toast.error(`${reason}`)
 		);
 	}, [props.database.id]);
+
+	React.useEffect(() => {
+		if (!monaco || !editor) return;
+		const actions: { [key: string]: IDisposable } = {};
+		Object.entries(props.actions || {}).forEach(([key, action]) => {
+			actions[key] = editor.addAction({
+				id: key,
+				label: action.label,
+				precondition: action.precondition,
+				keybindings: action.keybindings,
+				keybindingContext: action.keybindingContext,
+				contextMenuGroupId: action.contextMenuGroupId,
+				contextMenuOrder: action.contextMenuOrder,
+				run: action.run,
+			});
+		});
+		return () => {
+			Object.entries(actions).forEach(([key, iDisposable]) => {
+				logger.debug(`${key} action dispose.`);
+				iDisposable.dispose();
+			});
+		};
+	}, [monaco, editor, props.actions]);
 
 	React.useEffect(() => {
 		if (tables.length === 0 || !monaco || !editor) return;
