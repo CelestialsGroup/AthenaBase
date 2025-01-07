@@ -9,6 +9,7 @@ import AdminLayout from "~/layout/admin";
 import AuthLayout from "~/layout/auth";
 import SidebarLayout from "~/layout/sidebar";
 import NotFoundPage from "~/router/404";
+import ChartPage from "~/router/chart";
 import DashboardPage from "~/router/dashboard";
 import HomePage from "~/router/home";
 import QueryPage from "~/router/query";
@@ -28,6 +29,7 @@ const Router: React.FC = () => {
 				<Route path="/query" element={<QueryPage />} />
 
 				<Route path="/dashboard" element={<DashboardPage />} />
+				<Route path="/chart" element={<ChartPage />} />
 
 				<Route element={<AdminLayout />}>
 					<Route path="/admin" element={<AdminPage />} />

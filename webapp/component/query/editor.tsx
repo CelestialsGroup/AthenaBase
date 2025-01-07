@@ -52,7 +52,8 @@ const QueryEditor: React.FC<QueryEditorProps> = (props) => {
 
 	React.useEffect(() => {
 		if (tables.length === 0 || !monaco || !editor) return;
-		monaco.languages.registerCompletionItemProvider("sql", {
+		logger.debug("register sql completionItem provider.");
+		const iDisposable = monaco.languages.registerCompletionItemProvider("sql", {
 			provideCompletionItems: function (model, position) {
 				const word = model.getWordUntilPosition(position);
 				const suggestions = tables
@@ -71,6 +72,7 @@ const QueryEditor: React.FC<QueryEditorProps> = (props) => {
 				return { suggestions: suggestions };
 			}
 		});
+		return () => iDisposable.dispose();
 	}, [tables, monaco, editor]);
 
 	return <MonacoEditor

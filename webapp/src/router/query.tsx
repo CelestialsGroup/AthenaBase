@@ -2,11 +2,12 @@ import notice from "@component/notice";
 import Query from "@component/query";
 import api from "@internal/api";
 import logger from "@internal/helper/logger";
+import { GearIcon, LightningBoltIcon, TableIcon } from "@radix-ui/react-icons";
 import { Button } from "@shadcn/component/ui/button";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@shadcn/component/ui/resizable";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@shadcn/component/ui/select";
 import { Separator } from "@shadcn/component/ui/separator";
-import { Code2Icon, CodeIcon, Loader2, Play } from "lucide-react";
+import { Code2Icon, CodeIcon, DownloadCloudIcon, Loader2, PieChart, Play } from "lucide-react";
 import * as monaco from "monaco-editor";
 import React from "react";
 
@@ -80,7 +81,7 @@ const Page: React.FC = () => {
 			<ResizableHandle withHandle className={`${!showEditor ? "hidden" : ""} my-2`} />
 			<ResizablePanel minSize={25} className="flex flex-col">
 				<div className={
-					"flex-1 overflow-auto border rounded-lg " +
+					"flex-1 overflow-auto rounded-lg " +
 					"scrollbar-thin scrollbar-thumb-muted/90 scrollbar-track-background/10"
 				}>
 					{resp?.data ?
@@ -91,11 +92,22 @@ const Page: React.FC = () => {
 						</div>
 					}
 				</div>
-				<div className="pt-2 flex justify-between">
-					<div>state</div>
-					<div>grid</div>
-					{resp ? <div>{resp.data?.results.length}/{resp.latency}ms</div> : <div>--:--</div>}
-				</div>
+				{resp && <div className="pt-2 flex justify-between items-center">
+					<div className="flex items-center space-x-1">
+						<Button variant="secondary">Visualization</Button>
+						<Button variant="ghost" size="icon"><GearIcon /></Button>
+					</div>
+					<div className="flex items-center space-x-1">
+						<Button variant="ghost" size="icon"><TableIcon /></Button>
+						<Separator orientation="vertical" className="h-6" />
+						<Button variant="ghost" size="icon"><PieChart /></Button>
+					</div>
+					<div className="flex items-center space-x-2 text-sm">
+						<div className="text-muted-foreground">Showing first {resp.data?.results.length} rows</div>
+						<div className="flex items-center space-x-1"><LightningBoltIcon className="w-4" />{resp.latency}ms</div>
+						<Button variant="ghost" size="icon"><DownloadCloudIcon /></Button>
+					</div>
+				</div>}
 			</ResizablePanel>
 		</ResizablePanelGroup>}
 		{!db?.id && <div className="flex-1 flex flex-col justify-center items-center">Please select query database.</div>}
