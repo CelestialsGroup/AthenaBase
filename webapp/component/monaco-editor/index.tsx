@@ -1,4 +1,3 @@
-
 import MonacoContainer from "@component/monaco-editor/container";
 import React from "react";
 
@@ -56,7 +55,7 @@ const MonacoEditor: React.FC<MonacoEditorProps> = (props) => {
 		);
 		setEditor(monacoEditor);
 		return () => { monacoEditor.dispose(); setEditor(null); };
-	}, [monaco, container.current]);
+	}, [monaco, container]);
 
 	// Mount
 	React.useEffect(() => {

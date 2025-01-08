@@ -23,8 +23,6 @@ func Start(ctx context.Context) {
 		go func(ctx context.Context, name string, srv Server) {
 			if err := srv.Start(ctx); err != nil {
 				logger.Errorf("Failed to start %s server: %v\n", name, err)
-			} else {
-				logger.Errorf("Start %s server success\n", name)
 			}
 		}(ctx, name, srv)
 	}

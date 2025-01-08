@@ -10,7 +10,7 @@ class DateTime {
 			"%H": ("0" + value.getHours()).slice(-2), // 2-digit hour (00-23)
 			"%M": ("0" + value.getMinutes()).slice(-2), // 2-digit minute (00-59)
 			"%S": ("0" + value.getSeconds()).slice(-2), // 2-digit second (00-59)
-			"%f": ("000000" + value.getMilliseconds() * 1000).slice(-6), // microseconds (0-999999)
+			"%f": ("000000" + value.getMilliseconds()).slice(-6), // microseconds (000000-999000)
 			"%a": value.toLocaleString("en-US", { weekday: "short" }), // Abbreviated weekday (Mon, Tue, etc.)
 			"%A": value.toLocaleString("en-US", { weekday: "long" }), // Full weekday name (Monday, Tuesday, etc.)
 			"%b": value.toLocaleString("en-US", { month: "short" }), // Abbreviated month name (Jan, Feb, etc.)

@@ -48,7 +48,6 @@ func (ws *WebServer) Start(ctx context.Context) error {
 	}()
 	logger.Infof("%s Server Run http://%s/ \r\n", time.Now().String(), ws.server.Addr)
 	logger.Infof("%s Enter Control + C Shutdown Server \r\n", time.Now().String())
-
 	if err, ok := <-errChan; ok {
 		return err
 	}

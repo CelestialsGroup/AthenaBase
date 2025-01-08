@@ -41,7 +41,7 @@ func (auth) VerifyPassword(cipher, password string) error {
 	return nil
 }
 
-func (auth auth) ChechAuthUser(ctx context.Context, email string, password string) (*model.AuthUser, error) {
+func (auth auth) CheckAuthUser(ctx context.Context, email string, password string) (*model.AuthUser, error) {
 	authUser := new(model.AuthUser)
 	err := model.MasterDB().NewSelect().Model(authUser).Where("email = ?", email).Scan(ctx)
 	if err != nil {

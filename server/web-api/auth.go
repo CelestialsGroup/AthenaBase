@@ -21,7 +21,7 @@ func RegisterAuthRouter(group *gin.RouterGroup) {
 			return
 		}
 		ctx := ginCtx.Request.Context()
-		authUser, err := service.Auth.ChechAuthUser(ctx, body.Email, body.PassWord)
+		authUser, err := service.Auth.CheckAuthUser(ctx, body.Email, body.PassWord)
 		if err != nil {
 			web.GetWebCtx(ginCtx).ApiResp.Set(err)
 			return
