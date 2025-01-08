@@ -9,24 +9,23 @@ import {
 } from "@tanstack/react-table";
 import React from "react";
 
-interface ResultProps {
-	result: QueryResult
-	className?: string
-}
-
 type TableRowData = { [key: number]: string };
 
-const Result: React.FC<ResultProps> = (props) => {
+export type TableChartConfig = object
+
+type TableChartProps = TableChartConfig & QueryChartProps
+
+const Chart: React.FC<TableChartProps> = (props) => {
 	const data = React.useMemo(() => {
-		return props.result.results.map(
+		return props.data.results.map(
 			result => result.reduce((acc, curr, index) => {
 				acc[index] = curr;
 				return acc;
 			}, {} as TableRowData)
 		);
-	}, [props.result]);
+	}, [props.data]);
 	const columns: ColumnDef<TableRowData, any>[] = React.useMemo(() => {
-		return props.result.columns.map((col, index) => {
+		return props.data.columns.map((col, index) => {
 			const rowKey = index.toString();
 			return {
 				accessorKey: rowKey,
@@ -44,12 +43,11 @@ const Result: React.FC<ResultProps> = (props) => {
 				},
 			};
 		});
-	}, [props.result]);
+	}, [props.data]);
 	const table = useReactTable<TableRowData>({
 		data: data, columns: columns,
 		getCoreRowModel: getCoreRowModel(),
 	});
-
 	return <Table className={props.className}>
 		<TableHeader className="sticky top-0 bg-muted/80 backdrop-blur rounded-lg">
 			{table.getHeaderGroups().map((headerGroup) => <TableRow key={headerGroup.id}>
@@ -80,4 +78,4 @@ const Result: React.FC<ResultProps> = (props) => {
 	</Table>;
 };
 
-export default Result;
+export default Chart;

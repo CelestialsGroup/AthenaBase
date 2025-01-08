@@ -1,4 +1,4 @@
+import Chart from "@component/query/chart";
 import Editor from "@component/query/editor";
-import Result from "@component/query/result";
 
-export default { Editor, Result };
+export default { Editor, Chart };

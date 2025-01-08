@@ -5,3 +5,9 @@ interface QueryResult {
 	}[]
 	results: string[][]
 }
+
+
+interface QueryChartProps {
+	data: QueryResult
+	className?: string
+}
