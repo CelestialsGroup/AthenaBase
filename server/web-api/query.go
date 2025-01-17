@@ -5,6 +5,7 @@ import (
 	"athenabase/internal/model"
 	"athenabase/internal/web"
 	"database/sql"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -38,7 +39,7 @@ func RegisterQueryRouter(group *gin.RouterGroup) {
 			return
 		}
 
-		rows, err := db.QueryContext(ctx, "select * from (?) result limit 200", body.Stmt)
+		rows, err := db.QueryContext(ctx, fmt.Sprintf("select * from (%s) result limit 200", body.Stmt))
 		if err != nil {
 			web.GetWebCtx(ginCtx).ApiResp.Set(err)
 			return
