@@ -1,6 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@component/ui/table";
 import logger from "@internal/helper/logger";
 import { Badge } from "@shadcn/component/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@shadcn/component/ui/tooltip"; // 导入 Tooltip 组件
 import {
 	getCoreRowModel,
 	useReactTable,
@@ -8,7 +9,6 @@ import {
 	ColumnDef
 } from "@tanstack/react-table";
 import React from "react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@shadcn/component/ui/tooltip"; // 导入 Tooltip 组件
 interface ResultProps {
 	result: QueryResult
 	className?: string
